@@ -9,9 +9,11 @@
             :class="{ active: index === activeStep }"
             v-for="(step, index) in formSteps"
             :key="step + index"
+            @click=" console.log(activeStep = index) "
           >
-            <div class="progress-step-number">
+            <div class="progress-step-number" >
               {{ index + 1 }}
+              
             </div>
             <div class="progress-step-title">
               <h5>STEP {{ index + 1 }}</h5>
@@ -63,8 +65,8 @@
                   <h4>
                     {{
                       planEnrollment
-                        ? `$ ${item.value * 10}`
-                        : `$ ${item.value}`
+                        ? `$ ${item.value * 10}/yr`
+                        : `$ ${item.value}/mo`
                     }}
                   </h4>
                   <span
@@ -124,7 +126,7 @@
                         : ` ${this.selectedPlan.label}(Monthly)`
                     }}
                   </h4>
-                  <a href="{{ activeStep = 1 }}">Change</a>
+                  <span style="text-decoration-line: underline;color: black;" @click=" activeStep = 1 ">Change</span>
                 </div>
                 <h4>
                   {{
@@ -133,8 +135,8 @@
                       : `$${this.selectedPlan.value}/mo`
                   }}
                 </h4>
-            </div>
-            <span class="summary-plan-border"></span>
+              </div>
+              <span class="summary-plan-border"></span>
               <div v-for="(sum, index) in summary" :key="index">
                 <div class="summary-plan">
                   <h4 class="summary-plan-title">
@@ -151,7 +153,9 @@
               </div>
             </div>
             <div class="summary-total">
-              <h4 class="summary-total-title">{{ planEnrollment ? "Total(Yearly)" : "Total(Monthly)" }}</h4>
+              <h4 class="summary-total-title">
+                {{ planEnrollment ? "Total(Yearly)" : "Total(Monthly)" }}
+              </h4>
               <h4>
                 {{
                   planEnrollment
@@ -208,8 +212,8 @@
 export default {
   data: () => {
     return {
-      activeStep: 1,
-      animation: "animate-in",
+      activeStep: 0,
+      animation: "",
       planEnrollment: false,
       selectedPlan: null,
       thankingStep: false,
@@ -327,11 +331,10 @@ export default {
     checkFields() {
       let valid = true;
       this.formSteps[this.activeStep].fields.forEach((field) => {
-        if (!field.pattern.test(field.value) ) {
+        if (!field.pattern.test(field.value)) {
           valid = false;
           field.valid = false;
-        } 
-        else {
+        } else {
           field.valid = true;
         }
       });
@@ -339,7 +342,7 @@ export default {
       if (valid) {
         this.nextStep();
       } else {
-        this.animation = "animate-wrong";
+        this.animation = "wrong-input";
         setTimeout(() => {
           this.animation = "";
         }, 400);
@@ -385,6 +388,7 @@ export default {
   <style lang="scss" scoped>
 $white: #fff;
 $light-blue: #edf3ff;
+$red: fff;
 @mixin flexbox($justify, $align) {
   display: flex;
   justify-content: $justify;
@@ -398,7 +402,8 @@ span {
 }
 .container {
   @include flexbox(center, center);
-  width: 100%;
+  width: calc(100% - 40px);
+  padding: 0 20px;
   min-height: 100vh;
   font-family: "Noto Sans", sans-serif;
   background: radial-gradient(#f0ffff, #e8fcff);
@@ -413,6 +418,12 @@ article {
   background: $white;
   padding: 10px;
   border-radius: 15px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+  }
 
   header {
     display: flex;
@@ -424,10 +435,20 @@ article {
     background-color: $white;
     border-radius: 15px;
     padding-top: 20px;
+    @media (max-width: 768px) {
+      width: 100%;
+      height: 150px;
+      background-position-y: bottom;
+      background-size: cover;
+    }
   }
 
   .progress {
     padding: 20px;
+    @media (max-width: 768px) {
+      display: flex;
+      gap: 20px;
+    }
     .progress-step {
       display: flex;
       align-items: center;
@@ -465,6 +486,9 @@ article {
           font-size: 0.775rem;
           opacity: 0.5;
         }
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
     }
   }
@@ -474,12 +498,27 @@ article {
     width: 100%;
     background-color: $white;
     padding: 30px;
+    @media (max-width: 768px) {
+      max-width: fit-content;
+      width: calc(100% - 60px);
+    }
 
     h2 {
       font-size: 1.6rem;
-      color: #df5c2e;
+      color: #2a2928;
       margin: 0;
       padding: 10px 20px;
+      @media (max-width: 768px) {
+        padding: 0;
+        margin: 10px 0;
+      }
+    }
+
+    h3 {
+      @media (max-width: 768px) {
+        font-size: 0.7rem;
+        margin-bottom: 30px;
+      }
     }
 
     .input-fields {
@@ -493,6 +532,9 @@ article {
       padding: 30px 20px 20px 20px;
       width: calc(100% - 40px);
       max-width: 400px;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
 
       input {
         position: relative;
@@ -528,6 +570,10 @@ article {
       .input-plan-button {
         @include flexbox(space-between, center);
         gap: 50px;
+        @media (max-width: 768px) {
+          gap: 0;
+          flex-direction: column;
+        }
         button {
           width: 110px;
           height: 150px;
@@ -539,6 +585,13 @@ article {
           margin: 30px 0;
           border: 1px solid #999;
           transition: all 0.4s ease-in-out;
+          @media (max-width: 768px) {
+            margin: 10px 0;
+            width: 100%;
+            flex-direction: row;
+            height: fit-content;
+            justify-content: flex-start;
+          }
 
           &:hover {
             border: 1px solid rgb(68, 68, 140);
@@ -552,6 +605,9 @@ article {
           }
           .input-plan-button-information {
             text-align: left;
+            @media (max-width: 768px) {
+            margin: 0 10px;
+          }
           }
           .plan-image {
             width: 50px;
@@ -576,6 +632,13 @@ article {
 
       .switch input {
         display: none;
+      }
+
+      p{
+        @media (max-width: 768px) {
+        font-size: 0.7rem;
+        padding: 0 10px;
+      }
       }
 
       .slider {
@@ -625,6 +688,10 @@ article {
       border-radius: 15px;
       border: 1px solid rgb(223, 223, 223);
       transition: all 0.4s ease-in-out;
+      @media (max-width: 768px) {
+        min-width: 280px;
+
+        }
 
       &:hover {
         border: 1px solid rgb(68, 68, 140);
@@ -651,33 +718,38 @@ article {
       padding: 20px;
       min-width: 400px;
       border-radius: 20px;
+      @media (max-width: 768px) {
+        min-width: 280px;
+        }
       .summary-plan {
         @include flexbox(space-between, center);
         padding-bottom: 20px;
 
         .summary-plan-title {
           text-align: left;
-          font-size : 0.8rem;
-          color : rgb(183, 183, 183);
+          font-size: 0.8rem;
+          color: rgb(183, 183, 183);
         }
+      }
+      .summary-plan-border {
+        display: block;
+        background: rgb(218, 218, 218);
+        padding: 1px;
+        margin-bottom: 15px;
+      }
     }
-    .summary-plan-border {
-      display: block;
-      background: rgb(218, 218, 218);
-      padding: 1px;
-      margin-bottom: 15px;
+    .summary-total {
+      @include flexbox(space-between, center);
+      padding: 20px;
     }
-}
-.summary-total{
-    @include flexbox(space-between, center);
-    padding: 20px;
-
-}
     .actions {
       margin: 0;
       display: flex;
       justify-content: space-between;
       width: 100%;
+      @media (max-width: 768px) {
+        margin  : 15px 0;
+        }
 
       button {
         outline: none;
@@ -694,12 +766,15 @@ article {
       .actions-back {
         background: none;
         color: #bec3ce;
+        @media (max-width: 768px) {
+        padding : 0;
+        }
       }
     }
   }
 }
 
-.animate-wrong {
+.wrong-input {
   animation: wrong 0.4s ease-in-out;
 }
 
