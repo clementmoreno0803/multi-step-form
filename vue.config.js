@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/multiStepForm/'
+    publicPath: '/multi-step-form/'
 };
