@@ -9,7 +9,7 @@
             :class="{ active: index === activeStep }"
             v-for="(step, index) in formSteps"
             :key="step + index"
-            @click=" activeStep = index "
+            @click="navigationAfterSummary(index)"
             
           >
             <div class="progress-step-number" >
@@ -375,6 +375,16 @@ export default {
         }
       }
     },
+    navigationAfterSummary(index){
+        if(this.thankingStep == false && index == 3){
+            console.log('Please add plan and add-ons to access to the summary')
+        } else if(this.thankingStep == true){
+            console.log('Thank you for your order')
+        }
+        else {
+            return this.activeStep = index
+        }
+    }
   },
   computed: {
     // Permet de faire l'addition de la valeur des options "add-ons"
