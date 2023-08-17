@@ -9,7 +9,8 @@
             :class="{ active: index === activeStep }"
             v-for="(step, index) in formSteps"
             :key="step + index"
-            @click=" console.log(activeStep = index) "
+            @click=" activeStep = index "
+            
           >
             <div class="progress-step-number" >
               {{ index + 1 }}
@@ -126,7 +127,7 @@
                         : ` ${this.selectedPlan.label}(Monthly)`
                     }}
                   </h4>
-                  <span style="text-decoration-line: underline;color: black;" @click=" activeStep = 1 ">Change</span>
+                  <span class="summary-plan-change-button" @click=" activeStep = 1 ">Change</span>
                 </div>
                 <h4>
                   {{
@@ -454,6 +455,7 @@ article {
       align-items: center;
       position: relative;
       margin-bottom: 20px;
+      cursor:pointer;
 
       &.active {
         ~ .progress-step::before {
@@ -725,6 +727,11 @@ article {
         @include flexbox(space-between, center);
         padding-bottom: 20px;
 
+        .summary-plan-change-button{
+            text-decoration-line: underline;
+            color: black;
+            cursor: pointer; 
+        }
         .summary-plan-title {
           text-align: left;
           font-size: 0.8rem;
