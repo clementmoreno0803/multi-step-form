@@ -328,7 +328,6 @@ export default {
       this.activeStep -= 1;
     },
     // Vérifie si les valeurs rentrées respectent les regex
-    // Check if the users input respecting the regex rules
     checkFields() {
       let valid = true;
       this.formSteps[this.activeStep].fields.forEach((field) => {
@@ -350,7 +349,6 @@ export default {
       }
     },
     // Permet de séléctionner un plan d'abonnement
-    // Allow to select a plan
     selectPlan(item) {
       this.selectedPlan = item;
       this.formSteps[1].fields.forEach((i) => {
@@ -362,13 +360,11 @@ export default {
       });
     },
     // Rajoute la valeur de l'objet dans le tableau d'objet "summary"
-    // Add the object value into the "summary" object array
     addToTheSummary(item) {
       if (!item.isChecked) {
         this.summary.push(item);
       } else {
         // Si la case est décochée, enlevez l'objet du tableau des objets sélectionnés
-        // If the checkbox is unchecked, take off the object of the selected object array
         const index = this.summary.findIndex((t) => t.label == item.label);
         if (index !== -1) {
           this.summary.splice(index, 1);
@@ -388,7 +384,6 @@ export default {
   },
   computed: {
     // Permet de faire l'addition de la valeur des options "add-ons"
-    // Makes the sum up of "add-ons" options value
     calculateTotal() {
       return this.summary.reduce((total, sum) => total + sum.value, 0);
     },
@@ -397,14 +392,7 @@ export default {
 </script>
   
   <style lang="scss" scoped>
-$white: #fff;
-$light-blue: #edf3ff;
-$red: fff;
-@mixin flexbox($justify, $align) {
-  display: flex;
-  justify-content: $justify;
-  align-items: $align;
-}
+@import '../scss/main.scss';
 
 span {
   font-size: 0.65rem;

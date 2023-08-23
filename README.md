@@ -1,25 +1,11 @@
-# multi-step-form
+# Objectif de ce projet
 
-## Project setup
-```
-npm install
-```
+### 1 - Faire de l'Option Api
+### 2 - Comprendre les bases du SCSS 
+### 3 - Créer un composant qui change de content au click  
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+# Projet réalisé avec :
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-# multi-step-form
+### Vue 3
+### Vue Option Api
+### Scss
